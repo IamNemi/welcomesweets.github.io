@@ -54,6 +54,12 @@
         .tab-bar button.active { background: #d35400; color: #fff; }
         .login-error { color: #e74c3c; font-size: 14px; margin-top: 8px; display: none; }
         .login-loading { color: #888; font-size: 14px; margin-top: 8px; display: none; }
+        .search-bar { display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap; align-items:center; }
+        .search-bar input, .search-bar select { flex:1; min-width:150px; padding:8px 12px; border:1px solid #ccc; border-radius:4px; font-size:14px; }
+        .search-bar select { min-width:180px; }
+        .search-bar label { display:flex; align-items:center; gap:6px; font-size:14px; font-weight:600; margin:0; cursor:pointer; white-space:nowrap; }
+        .search-bar label input[type="checkbox"] { width:auto; }
+        .item-count { font-size:13px; color:#888; margin-bottom:8px; }
         @media (max-width: 600px) { .row { flex-direction: column; } }
     </style>
 </head>
@@ -103,6 +109,9 @@
             </div>
             <div class="card">
                 <h2>Existing Categories</h2>
+                <div class="search-bar">
+                    <input type="text" id="cat-search" placeholder="Search categories…" oninput="filterCats()">
+                </div>
                 <table>
                     <thead><tr><th>Name</th><th>Order</th><th>Actions</th></tr></thead>
                     <tbody id="cat-table"></tbody>
@@ -138,6 +147,16 @@
             </div>
             <div class="card">
                 <h2>Existing Items</h2>
+                <div class="search-bar">
+                    <input type="text" id="item-search" placeholder="Search items…" oninput="filterItems()">
+                    <select id="item-filter-cat" onchange="filterItems()">
+                        <option value="">All Categories</option>
+                    </select>
+                    <label>
+                        <input type="checkbox" id="item-filter-popular" onchange="filterItems()"> Popular only
+                    </label>
+                </div>
+                <p class="item-count" id="item-count"></p>
                 <table>
                     <thead><tr><th>Image Link</th><th>Name</th><th>Category</th><th>Price</th><th>Popular</th><th>Actions</th></tr></thead>
                     <tbody id="item-table"></tbody>
@@ -268,9 +287,10 @@ async function loadAll() {
 }
 
 /* ── categories ───────────────────────────────────── */
-function renderCats() {
+function renderCats(filtered) {
+    const list = filtered || cats;
     const tb = document.getElementById('cat-table');
-    tb.innerHTML = cats.map(c =>
+    tb.innerHTML = list.map(c =>
         `<tr>
             <td>${esc(c.name)}</td>
             <td>${c.sort_order}</td>
@@ -280,6 +300,10 @@ function renderCats() {
             </td>
         </tr>`
     ).join('');
+}
+function filterCats() {
+    const q = document.getElementById('cat-search').value.toLowerCase();
+    renderCats(cats.filter(c => c.name.toLowerCase().includes(q)));
 }
 function populateCatSelect() {
     const s = document.getElementById('item-cat');
@@ -319,11 +343,22 @@ let items = [];
 async function loadItems() {
     const { data } = await supa.from('menu_items').select('*').order('sort_order');
     items = data || [];
-    renderItems();
+    populateFilterCatSelect();
+    filterItems();
 }
-function renderItems() {
+function populateFilterCatSelect() {
+    const s = document.getElementById('item-filter-cat');
+    const current = s.value;
+    s.innerHTML = '<option value="">All Categories</option>' + cats.map(c =>
+        `<option value="${c.id}">${esc(c.name)}</option>`
+    ).join('');
+    s.value = current;
+}
+function renderItems(filtered) {
+    const list = filtered || items;
     const tb = document.getElementById('item-table');
-    tb.innerHTML = items.map(i => {
+    document.getElementById('item-count').textContent = `Showing ${list.length} of ${items.length} items`;
+    tb.innerHTML = list.map(i => {
         const catName = (cats.find(c => c.id === i.category_id) || {}).name || '—';
         const imgLink = i.image_url
             ? `<a href="${esc(i.image_url)}" target="_blank" class="img-link">View</a>`
@@ -340,6 +375,17 @@ function renderItems() {
             </td>
         </tr>`;
     }).join('');
+}
+function filterItems() {
+    const q = document.getElementById('item-search').value.toLowerCase();
+    const cat = document.getElementById('item-filter-cat').value;
+    const popularOnly = document.getElementById('item-filter-popular').checked;
+    renderItems(items.filter(i => {
+        if (q && !i.name.toLowerCase().includes(q)) return false;
+        if (cat && i.category_id !== cat) return false;
+        if (popularOnly && !i.popular) return false;
+        return true;
+    }));
 }
 function clearItemForm() {
     ['item-id','item-name','item-desc','item-price','item-img'].forEach(id => document.getElementById(id).value='');
