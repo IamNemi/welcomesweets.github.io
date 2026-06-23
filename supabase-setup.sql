@@ -21,22 +21,28 @@ create table if not exists menu_items (
   sort_order int default 0
 );
 
--- 3. Enable Row Level Security (RLS) but allow public read
+-- 3. Enable Row Level Security (RLS)
 alter table categories enable row level security;
 alter table menu_items enable row level security;
 
--- Public can read everything
+-- Public can read everything (for the website)
 create policy "Public read categories" on categories for select using (true);
 create policy "Public read menu_items" on menu_items for select using (true);
 
--- Anyone with the anon key can insert/update/delete (admin panel)
-create policy "Admin insert categories" on categories for insert with check (true);
-create policy "Admin update categories" on categories for update using (true);
-create policy "Admin delete categories" on categories for delete using (true);
+-- Only authenticated users can write (for the admin panel)
+create policy "Auth insert categories" on categories
+  for insert with check (auth.role() = 'authenticated');
+create policy "Auth update categories" on categories
+  for update using (auth.role() = 'authenticated');
+create policy "Auth delete categories" on categories
+  for delete using (auth.role() = 'authenticated');
 
-create policy "Admin insert menu_items" on menu_items for insert with check (true);
-create policy "Admin update menu_items" on menu_items for update using (true);
-create policy "Admin delete menu_items" on menu_items for delete using (true);
+create policy "Auth insert menu_items" on menu_items
+  for insert with check (auth.role() = 'authenticated');
+create policy "Auth update menu_items" on menu_items
+  for update using (auth.role() = 'authenticated');
+create policy "Auth delete menu_items" on menu_items
+  for delete using (auth.role() = 'authenticated');
 
 -- 4. Create storage bucket for menu images
 insert into storage.buckets (id, name, public) values ('menu-images', 'menu-images', true)
@@ -46,13 +52,12 @@ on conflict (id) do nothing;
 create policy "Public read storage" on storage.objects
   for select using (bucket_id = 'menu-images');
 
--- Allow anyone with anon key to upload
-create policy "Admin upload storage" on storage.objects
-  for insert with check (bucket_id = 'menu-images');
+-- Only authenticated users can upload/delete images
+create policy "Auth upload storage" on storage.objects
+  for insert with check (bucket_id = 'menu-images' and auth.role() = 'authenticated');
 
--- Allow anyone with anon key to delete
-create policy "Admin delete storage" on storage.objects
-  for delete using (bucket_id = 'menu-images');
+create policy "Auth delete storage" on storage.objects
+  for delete using (bucket_id = 'menu-images' and auth.role() = 'authenticated');
 
 -- 5. Seed some default categories
 insert into categories (name, sort_order) values

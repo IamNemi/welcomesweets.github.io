@@ -1,5 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { supabase } from '../lib/supabase.js';
+
+// Fetch categories and items at build time (SSG) with fallback
+let categories = [];
+let menuItems = [];
+try {
+  const [catResult, itemResult] = await Promise.all([
+    supabase.from('categories').select('*').order('sort_order'),
+    supabase.from('menu_items').select('*').order('sort_order'),
+  ]);
+  if (!catResult.error && catResult.data) categories = catResult.data;
+  if (!itemResult.error && itemResult.data) menuItems = itemResult.data;
+} catch (e) {
+  console.warn('Could not fetch menu data:', e);
+}
 ---
 
 <Layout>
@@ -35,58 +50,34 @@ import Layout from '../layouts/Layout.astro';
     <p>Explore our delicious sweets and savories</p>
   </header>
   <section id="menu-container">
-    <p class="loading">Loading menu…</p>
+    {categories.length > 0 ? (
+      categories.map(cat => {
+        const catItems = menuItems.filter(i => i.category_id === cat.id);
+        return (
+          <div class="category">
+            <h3>{cat.name}</h3>
+            <div class="items">
+              {catItems.length > 0 ? (
+                catItems.map(item => (
+                  <div class="item">
+                    <img src={item.image_url || '/favicon.svg'} alt={item.name} loading="lazy" />
+                    <h4>{item.name}</h4>
+                    <p>{item.description || ''}</p>
+                    {item.price && <p class="price">{item.price}</p>}
+                  </div>
+                ))
+              ) : (
+                <p class="empty">No items in this category yet.</p>
+              )}
+            </div>
+          </div>
+        );
+      })
+    ) : (
+      <p class="loading">Menu coming soon!</p>
+    )}
   </section>
   <section>
     <a href="/" class="btn">← Back to Home</a>
   </section>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    // @ts-nocheck
-    const SUPABASE_URL = 'https://jfvgsaiobwaozbsdnaec.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmdmdzYWlvYndhb3pic2RuYWVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMDE5MDQsImV4cCI6MjA5Nzc3NzkwNH0.4WwDK2PKkrQ5DAASvCuEWToXDNadUMFOesPluVSrEBk';
-    const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    async function loadMenu() {
-      const container = document.getElementById('menu-container');
-      if (!container) return;
-
-      const { data: categories } = await supa
-        .from('categories')
-        .select('*')
-        .order('sort_order');
-
-      const { data: items } = await supa
-        .from('menu_items')
-        .select('*')
-        .order('sort_order');
-
-      if (!categories || categories.length === 0) {
-        container.innerHTML = '<p class="loading">Menu coming soon!</p>';
-        return;
-      }
-
-      container.innerHTML = categories.map(cat => {
-        const catItems = (items || []).filter(i => i.category_id === cat.id);
-        const itemsHtml = catItems.length > 0
-          ? catItems.map(i =>
-              '<div class="item">' +
-                '<img src="' + (i.image_url || '/favicon.svg') + '" alt="' + i.name + '" loading="lazy" />' +
-                '<h4>' + i.name + '</h4>' +
-                '<p>' + (i.description || '') + '</p>' +
-                (i.price ? '<p class="price">' + i.price + '</p>' : '') +
-              '</div>'
-            ).join('')
-          : '<p class="empty">No items in this category yet.</p>';
-
-        return '<div class="category">' +
-          '<h3>' + cat.name + '</h3>' +
-          '<div class="items">' + itemsHtml + '</div>' +
-        '</div>';
-      }).join('');
-    }
-
-    loadMenu();
-  </script>
 </Layout>
