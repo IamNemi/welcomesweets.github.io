@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Sweets - Admin Panel</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        header { background: #d35400; color: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        header h1 { font-size: 22px; }
+        .card { background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        .card h2 { color: #d35400; margin-bottom: 16px; font-size: 18px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; margin-top: 12px; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; font-family: inherit; }
+        textarea { min-height: 80px; resize: vertical; }
+        .row { display: flex; gap: 12px; flex-wrap: wrap; }
+        .row > * { flex: 1; min-width: 200px; }
+        button {
+            padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;
+            font-size: 15px; font-weight: 600; margin-top: 16px;
+        }
+        .btn-primary { background: #d35400; color: #fff; }
+        .btn-primary:hover { background: #c0392b; }
+        .btn-secondary { background: #7f8c8d; color: #fff; }
+        .btn-danger { background: #e74c3c; color: #fff; }
+        .btn-small { padding: 6px 12px; font-size: 13px; margin-top: 0; }
+        .msg { padding: 12px; border-radius: 4px; margin-bottom: 16px; display: none; }
+        .msg-ok { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .msg-err { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #eee; }
+        th { background: #fafafa; font-size: 13px; text-transform: uppercase; color: #888; }
+        .item-row img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+        .actions { display: flex; gap: 6px; }
+        .hidden { display: none; }
+        #login-box { max-width: 380px; margin: 60px auto; }
+        #login-box h2 { text-align: center; }
+        .preview-img { max-width: 180px; max-height: 180px; border-radius: 4px; margin-top: 8px; display: block; }
+        .tab-bar { display: flex; gap: 0; margin-bottom: 20px; }
+        .tab-bar button { flex: 1; background: #eee; color: #333; border-radius: 0; margin: 0; }
+        .tab-bar button.active { background: #d35400; color: #fff; }
+        @media (max-width: 600px) { .row { flex-direction: column; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header><h1>Welcome Sweets &amp; Farsan — Admin Panel</h1></header>
+
+    <!-- LOGIN -->
+    <div id="login-box" class="card">
+        <h2>Admin Login</h2>
+        <label for="pwd">Password</label>
+        <input type="password" id="pwd" placeholder="Enter password">
+        <button class="btn-primary" onclick="doLogin()" style="width:100%">Login</button>
+    </div>
+
+    <!-- MAIN PANEL (hidden until login) -->
+    <div id="panel" class="hidden">
+        <div id="msg" class="msg"></div>
+
+        <!-- Tabs -->
+        <div class="tab-bar">
+            <button class="active" onclick="showTab('categories')">Categories</button>
+            <button onclick="showTab('items')">Menu Items</button>
+            <button onclick="showTab('images')">Image Upload</button>
+        </div>
+
+        <!-- CATEGORIES TAB -->
+        <div id="tab-categories">
+            <div class="card">
+                <h2>Add / Edit Category</h2>
+                <input type="hidden" id="cat-id">
+                <div class="row">
+                    <div><label>Name</label><input type="text" id="cat-name" placeholder="e.g. Traditional Sweets"></div>
+                    <div><label>Sort Order</label><input type="number" id="cat-order" value="0"></div>
+                </div>
+                <button class="btn-primary" onclick="saveCat()">Save</button>
+                <button class="btn-secondary" onclick="clearCatForm()">Clear</button>
+            </div>
+            <div class="card">
+                <h2>Existing Categories</h2>
+                <table>
+                    <thead><tr><th>Name</th><th>Order</th><th>Actions</th></tr></thead>
+                    <tbody id="cat-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ITEMS TAB -->
+        <div id="tab-items" class="hidden">
+            <div class="card">
+                <h2>Add / Edit Menu Item</h2>
+                <input type="hidden" id="item-id">
+                <div class="row">
+                    <div>
+                        <label>Category</label>
+                        <select id="item-cat"></select>
+                    </div>
+                    <div><label>Name</label><input type="text" id="item-name" placeholder="e.g. Ladoo"></div>
+                </div>
+                <label>Description</label>
+                <textarea id="item-desc" placeholder="Describe the item..."></textarea>
+                <div class="row">
+                    <div><label>Price (optional)</label><input type="text" id="item-price" placeholder="e.g. ₹30"></div>
+                    <div><label>Image URL</label><input type="text" id="item-img" placeholder="Paste URL or use Image Upload tab"></div>
+                </div>
+                <button class="btn-primary" onclick="saveItem()">Save</button>
+                <button class="btn-secondary" onclick="clearItemForm()">Clear</button>
+            </div>
+            <div class="card">
+                <h2>Existing Items</h2>
+                <table>
+                    <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Actions</th></tr></thead>
+                    <tbody id="item-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- IMAGE UPLOAD TAB -->
+        <div id="tab-images" class="hidden">
+            <div class="card">
+                <h2>Upload Image</h2>
+                <p style="color:#666;margin-bottom:12px;">Upload an image to get a URL you can paste into menu items.</p>
+                <label>Choose File</label>
+                <input type="file" id="img-file" accept="image/*">
+                <img id="img-preview" class="preview-img hidden">
+                <button class="btn-primary" onclick="uploadImg()">Upload</button>
+                <div id="upload-result" class="hidden" style="margin-top:12px;">
+                    <label>Image URL (copy this)</label>
+                    <input type="text" id="upload-url" readonly onclick="this.select()">
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-danger" onclick="logout()" style="margin-top:10px;">Logout</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ============================================================
+// UPDATE THESE TWO VALUES with your Supabase project details
+// ============================================================
+const SUPABASE_URL  = 'https://jfvgsaiobwaozbsdnaec.supabase.co';
+const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmdmdzYWlvYndhb3pic2RuYWVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMDE5MDQsImV4cCI6MjA5Nzc3NzkwNH0.4WwDK2PKkrQ5DAASvCuEWToXDNadUMFOesPluVSrEBk';
+const ADMIN_PASS    = 'welcomesweetandfarsanlol12345678';   // change this
+
+const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let cats = [];   // categories cache
+
+/* ── auth ─────────────────────────────────────────── */
+function doLogin() {
+    if (document.getElementById('pwd').value === ADMIN_PASS) {
+        document.getElementById('login-box').classList.add('hidden');
+        document.getElementById('panel').classList.remove('hidden');
+        loadAll();
+    } else { alert('Wrong password'); }
+}
+function logout() {
+    document.getElementById('login-box').classList.remove('hidden');
+    document.getElementById('panel').classList.add('hidden');
+    document.getElementById('pwd').value = '';
+}
+document.getElementById('pwd').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+/* ── tabs ─────────────────────────────────────────── */
+function showTab(name) {
+    ['categories','items','images'].forEach(t => {
+        document.getElementById('tab-'+t).classList.toggle('hidden', t !== name);
+    });
+    document.querySelectorAll('.tab-bar button').forEach((b,i) => {
+        b.classList.toggle('active', ['categories','items','images'][i] === name);
+    });
+}
+
+/* ── status message ───────────────────────────────── */
+function flash(ok, text) {
+    const el = document.getElementById('msg');
+    el.className = 'msg ' + (ok ? 'msg-ok' : 'msg-err');
+    el.textContent = text; el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 3000);
+}
+
+/* ── load everything ──────────────────────────────── */
+async function loadAll() {
+    const { data: c } = await supa.from('categories').select('*').order('sort_order');
+    cats = c || [];
+    renderCats();
+    populateCatSelect();
+    await loadItems();
+}
+
+/* ── categories ───────────────────────────────────── */
+function renderCats() {
+    const tb = document.getElementById('cat-table');
+    tb.innerHTML = cats.map(c =>
+        `<tr>
+            <td>${esc(c.name)}</td>
+            <td>${c.sort_order}</td>
+            <td class="actions">
+                <button class="btn-primary btn-small" onclick="editCat('${c.id}')">Edit</button>
+                <button class="btn-danger btn-small" onclick="delCat('${c.id}')">Delete</button>
+            </td>
+        </tr>`
+    ).join('');
+}
+function populateCatSelect() {
+    const s = document.getElementById('item-cat');
+    s.innerHTML = '<option value="">Select…</option>' + cats.map(c =>
+        `<option value="${c.id}">${esc(c.name)}</option>`
+    ).join('');
+}
+function clearCatForm() { document.getElementById('cat-id').value=''; document.getElementById('cat-name').value=''; document.getElementById('cat-order').value='0'; }
+function editCat(id) {
+    const c = cats.find(x => x.id === id);
+    if (c) { document.getElementById('cat-id').value=c.id; document.getElementById('cat-name').value=c.name; document.getElementById('cat-order').value=c.sort_order; }
+}
+async function saveCat() {
+    const id   = document.getElementById('cat-id').value;
+    const name = document.getElementById('cat-name').value.trim();
+    const ord  = parseInt(document.getElementById('cat-order').value) || 0;
+    if (!name) return flash(false, 'Name is required');
+    let err;
+    if (id) {
+        ({ error: err } = await supa.from('categories').update({ name, sort_order: ord }).eq('id', id));
+    } else {
+        ({ error: err } = await supa.from('categories').insert({ name, sort_order: ord }));
+    }
+    if (err) return flash(false, err.message);
+    flash(true, 'Category saved');
+    clearCatForm(); loadAll();
+}
+async function delCat(id) {
+    if (!confirm('Delete this category and all its items?')) return;
+    await supa.from('menu_items').delete().eq('category_id', id);
+    await supa.from('categories').delete().eq('id', id);
+    flash(true, 'Category deleted'); loadAll();
+}
+
+/* ── menu items ───────────────────────────────────── */
+let items = [];
+async function loadItems() {
+    const { data } = await supa.from('menu_items').select('*').order('sort_order');
+    items = data || [];
+    renderItems();
+}
+function renderItems() {
+    const tb = document.getElementById('item-table');
+    tb.innerHTML = items.map(i => {
+        const catName = (cats.find(c => c.id === i.category_id) || {}).name || '—';
+        return `<tr>
+            <td><img src="${esc(i.image_url || '/favicon.svg')}" alt=""></td>
+            <td>${esc(i.name)}</td>
+            <td>${esc(catName)}</td>
+            <td>${esc(i.price || '—')}</td>
+            <td class="actions">
+                <button class="btn-primary btn-small" onclick="editItem('${i.id}')">Edit</button>
+                <button class="btn-danger btn-small" onclick="delItem('${i.id}')">Delete</button>
+            </td>
+        </tr>`;
+    }).join('');
+}
+function clearItemForm() {
+    ['item-id','item-name','item-desc','item-price','item-img'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('item-cat').value = '';
+}
+function editItem(id) {
+    const i = items.find(x => x.id === id);
+    if (!i) return;
+    document.getElementById('item-id').value   = i.id;
+    document.getElementById('item-cat').value   = i.category_id;
+    document.getElementById('item-name').value  = i.name;
+    document.getElementById('item-desc').value  = i.description || '';
+    document.getElementById('item-price').value = i.price || '';
+    document.getElementById('item-img').value   = i.image_url || '';
+}
+async function saveItem() {
+    const id   = document.getElementById('item-id').value;
+    const cat  = document.getElementById('item-cat').value;
+    const name = document.getElementById('item-name').value.trim();
+    const desc = document.getElementById('item-desc').value.trim();
+    const price= document.getElementById('item-price').value.trim();
+    const img  = document.getElementById('item-img').value.trim();
+    if (!cat || !name) return flash(false, 'Category and Name are required');
+    const row = { category_id: cat, name, description: desc, price, image_url: img };
+    let err;
+    if (id) {
+        ({ error: err } = await supa.from('menu_items').update(row).eq('id', id));
+    } else {
+        ({ error: err } = await supa.from('menu_items').insert(row));
+    }
+    if (err) return flash(false, err.message);
+    flash(true, 'Item saved');
+    clearItemForm(); loadItems();
+}
+async function delItem(id) {
+    if (!confirm('Delete this item?')) return;
+    await supa.from('menu_items').delete().eq('id', id);
+    flash(true, 'Item deleted'); loadItems();
+}
+
+/* ── image upload ─────────────────────────────────── */
+document.getElementById('img-file').addEventListener('change', e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = ev => { const p = document.getElementById('img-preview'); p.src = ev.target.result; p.classList.remove('hidden'); };
+    r.readAsDataURL(f);
+});
+async function uploadImg() {
+    const file = document.getElementById('img-file').files[0];
+    if (!file) return alert('Choose a file first');
+    const ext = file.name.split('.').pop();
+    const path = 'menu/' + Date.now() + '.' + ext;
+    const { error } = await supa.storage.from('menu-images').upload(path, file);
+    if (error) return flash(false, error.message);
+    const { data } = supa.storage.from('menu-images').getPublicUrl(path);
+    document.getElementById('upload-url').value = data.publicUrl;
+    document.getElementById('upload-result').classList.remove('hidden');
+    flash(true, 'Image uploaded — copy the URL below');
+}
+
+/* ── helpers ──────────────────────────────────────── */
+function esc(s) { const d = document.createElement('div'); d.textContent = s||''; return d.innerHTML; }
+</script>
+</body>
+</html>
