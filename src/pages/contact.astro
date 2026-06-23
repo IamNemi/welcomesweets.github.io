@@ -2,26 +2,26 @@
 import Layout from '../layouts/Layout.astro';
 ---
 <Layout>
-  <style>
+  <style is:global>
     :root { --primary:#d35400; --bg:#fff8f0; --text:#333; }
-    body { margin:0; font-family:sans-serif; background:var(--bg); color:var(--text); }
     header { text-align:center; padding:3rem 1rem; background:var(--primary); color:#fff; }
     header img { width:150px; height:150px; border-radius:50%; object-fit:cover; margin-bottom:1rem; }
-    header h1 { margin:0.5rem 0; font-size:2rem; }
-    header p { margin:0; opacity:0.9; }
+    header h1 { margin:0.5rem 0; font-size:3.25rem; }
+    header p { margin:0; opacity:0.9; font-size:1.5rem; }
     section { max-width:960px; margin:auto; padding:2rem; }
-    h2 { color:var(--primary); margin-top:2rem; }
+    h2 { color:var(--primary); margin-top:2rem; font-size:2.2rem; }
     .contact-info { display:flex; flex-wrap:wrap; gap:2rem; margin-top:1.5rem; }
-    .info-item { background:#fff; border:1px solid #ddd; border-radius:8px; padding:1.5rem; flex:1; min-width:250px; }
-    .info-item h3 { margin-top:0; color:var(--primary); }
-    .info-item p { margin:0.5rem 0; }
+    .info-item { background:#fff; border:1px solid #ddd; border-radius:8px; padding:2rem; flex:1; min-width:280px; position:relative; z-index:1; }
+    .info-item h3 { margin-top:0; color:var(--primary); font-size:1.6rem; }
+    .info-item p { margin:0.5rem 0; font-size:1.25rem; }
     .map { border-radius:8px; overflow:hidden; margin-top:2rem; }
-    .btn { display:inline-block; background:var(--primary); color:#fff; padding:0.8rem 1.5rem; border-radius:5px; text-decoration:none; margin-top:1rem; }
+    .btn { display:inline-block; background:var(--primary); color:#fff; padding:1rem 2rem; border-radius:5px; text-decoration:none; margin-top:1rem; font-size:1.25rem; }
     .btn:hover { opacity:0.9; }
-    form { background:#fff; padding:2rem; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-top:2rem; }
+    .phone-num { cursor:pointer; color:var(--primary); text-decoration:underline; position:relative; }
+    form { background:#fff; padding:2rem; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-top:2rem; position:relative; z-index:1; }
     label { display:block; margin-bottom:0.5rem; font-weight:bold; }
-    input, textarea { width:100%; padding:0.8rem; margin-bottom:1rem; border:1px solid #ccc; border-radius:4px; }
-    button { background:var(--primary); color:#fff; border:none; padding:0.8rem 1.5rem; border-radius:4px; cursor:pointer; }
+    input, textarea { width:100%; padding:1rem; margin-bottom:1rem; border:1px solid #ccc; border-radius:4px; font-size:1.1rem; }
+    button { background:var(--primary); color:#fff; border:none; padding:1rem 2rem; border-radius:4px; cursor:pointer; font-size:1.25rem; }
     button:hover { opacity:0.9; }
   </style>
   <header>
@@ -35,13 +35,14 @@ import Layout from '../layouts/Layout.astro';
       <div class="info-item">
         <h3>Visit Us</h3>
         <p>Welcome Sweets and Farsan</p>
-        <p>123 Sweet Street, Mumbai, Maharashtra 400001</p>
+        <p>Shop No. 11, Rustamji Evershine, Avenue J-4, Global City, Virar (West), Maharashtra, India</p>
         <p>Open: 8:00 AM - 9:00 PM (Daily)</p>
       </div>
       <div class="info-item">
         <h3>Call Us</h3>
-        <p>Phone: +91 22 1234 5678</p>
-        <p>WhatsApp: +91 22 1234 5678</p>
+        <p>Phone: <span class="phone-num" onclick="copyPhone(this)" title="Click to copy">97648 84868</span></p>
+        <p>Phone: <span class="phone-num" onclick="copyPhone(this)" title="Click to copy">96104 41857</span></p>
+        <p>Phone: <span class="phone-num" onclick="copyPhone(this)" title="Click to copy">93585 49363</span></p>
       </div>
       <div class="info-item">
         <h3>Email Us</h3>
@@ -56,7 +57,8 @@ import Layout from '../layouts/Layout.astro';
     </div>
     <div class="map">
       <h2>Our Location</h2>
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3504.123456789012!2d77.123456!3d28.654321!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d04...!2sWelcome%20Sweets!5e0!3m2!1sen!2sin!4v1600000000000" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3504.123456789012!2d72.8054615!3d19.4723286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b7e5e7e5e7e5%3A0x7e5e7e5e7e5e7e5e!2sGlobal%20City%2C%20Virar%20West!5e0!3m2!1sen!2sin!4v1600000000000" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      <p><a href="https://maps.app.goo.gl/tvQjN9EZC4EFstH28" target="_blank" class="btn">Open in Google Maps</a></p>
     </div>
   </section>
   <section>
@@ -75,3 +77,16 @@ import Layout from '../layouts/Layout.astro';
     <a href="/" class="btn">← Back to Home</a>
   </section>
 </Layout>
+
+<script is:inline>
+  function copyPhone(el) {
+    const num = el.textContent.trim();
+    navigator.clipboard.writeText(num).then(() => {
+      const toast = document.createElement('div');
+      toast.textContent = 'Copied: ' + num;
+      toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:0.8rem 1.5rem;border-radius:8px;font-size:1rem;z-index:9999;';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2000);
+    });
+  }
+</script>

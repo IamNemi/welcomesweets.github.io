@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import OpeningHours from '../components/OpeningHours.astro';
 ---
 
 <Layout>
@@ -9,36 +10,44 @@ import Layout from '../layouts/Layout.astro';
       --bg: #fff8f0;
       --text: #333;
     }
-    body { margin:0; font-family:sans-serif; background:var(--bg); color:var(--text); }
     .hero { background:var(--primary); color:#fff; text-align:center; padding:4rem 2rem; }
     .logo { width:150px; height:150px; border-radius:50%; object-fit:cover; margin-bottom:1rem; }
-    .hero h1 { margin:0.5rem 0; font-size:2.5rem; }
-    .hero p { margin:0; font-size:1.2rem; opacity:0.9; }
+    .hero h1 { margin:0.5rem 0; font-size:3.75rem; }
+    .hero p { margin:0; font-size:1.7rem; opacity:0.9; }
     .buttons { margin-top:2rem; }
-    .btn { display:inline-block; background:#fff; color:var(--primary); padding:0.8rem 1.5rem; margin:0.5rem; border-radius:5px; text-decoration:none; font-weight:bold; }
+    .btn { display:inline-block; background:#fff; color:var(--primary); padding:1rem 2rem; margin:0.5rem; border-radius:5px; text-decoration:none; font-weight:bold; font-size:1.25rem; }
     .hero .btn { background:rgba(255,255,255,0.2); color:#fff; }
     .hero .btn:hover { background:rgba(255,255,255,0.3); }
     section { padding:3rem 2rem; max-width:960px; margin:auto; }
-    h2 { text-align:center; margin-bottom:1.5rem; color:var(--primary); }
-    .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:1.5rem; justify-content:center; }
-    .item { text-align:center; border:1px solid #ddd; border-radius:8px; padding:0.75rem; background:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; min-height:175px; }
-    .item img { width:80px; height:80px; object-fit:cover; border-radius:8px; margin-bottom:0.5rem; }
-    .item p { margin:0; font-size:0.9rem; }
+    h2 { text-align:center; margin-bottom:1.5rem; color:var(--primary); font-size:2.2rem; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:1.5rem; justify-content:center; }
+    .item { text-align:center; border:1px solid #ddd; border-radius:8px; padding:1.2rem; background:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; min-height:220px; position:relative; z-index:1; }
+    .item img { width:120px; height:120px; object-fit:cover; border-radius:8px; margin-bottom:0.75rem; }
+    .item p { margin:0; font-size:1.25rem; }
     iframe { border:none; border-radius:8px; width:100%; height:300px; }
     .order-btns { display:flex; justify-content:center; gap:1.5rem; margin-top:1.5rem; flex-wrap:wrap; }
     .order-btns .btn { background:var(--primary); color:#fff; }
     .order-btns .btn:hover { opacity:0.9; }
     .loading { text-align:center; color:#999; padding:2rem; }
+    #about p, #location p { text-align:center; font-size:1.4rem; line-height:1.8; font-weight:700; }
+    #about h2 { color:#633806; }
+    .phone-num { cursor:pointer; color:var(--primary); text-decoration:underline; position:relative; }
     @media (max-width:600px) {
       .hero { padding:3rem 1rem; }
-      .hero h1 { font-size:2rem; }
+      .hero h1 { font-size:2.5rem; }
       section { padding:2rem 1rem; }
-      .grid { grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:1rem; }
-      .item { min-height:150px; padding:0.6rem; }
-      .item img { width:60px; height:60px; }
+      .grid { grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:1rem; }
+      .item { min-height:190px; padding:1rem; }
+      .item img { width:100px; height:100px; }
+      #photos div { grid-template-columns:1fr !important; }
+      #photos div > div { grid-column:auto !important; grid-row:auto !important; }
+      #photos img { min-height:200px !important; }
     }
   </style>
-  <header class="hero">
+  <header class="hero" style="position:relative;">
+    <div style="position:absolute;top:1.5rem;left:1.5rem;z-index:2;">
+      <OpeningHours />
+    </div>
     <img src="/favicon.png" alt="Logo" class="logo" loading="eager" />
     <h1>Welcome Sweets</h1>
     <p>Freshly baked sweets &amp; savories</p>
@@ -47,9 +56,51 @@ import Layout from '../layouts/Layout.astro';
       <a href="#location" class="btn">Location</a>
     </div>
   </header>
+  <section id="photos" style="max-width:960px;margin:auto;padding:2rem;">
+    <h2 style="text-align:center;color:#633806;font-size:2.2rem;margin-bottom:1.5rem;">Our Shop</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:1rem;">
+      <div style="grid-column:1/3;grid-row:1/3;border-radius:12px;overflow:hidden;">
+        <img src="/shop1.jpg" alt="Welcome Sweets Shop" style="width:100%;height:100%;object-fit:cover;display:block;min-height:350px;" />
+      </div>
+      <div style="grid-column:3;grid-row:1;border-radius:12px;overflow:hidden;">
+        <img src="/shop2.jpg" alt="Welcome Sweets Shop" style="width:100%;height:100%;object-fit:cover;display:block;min-height:170px;" />
+      </div>
+      <div style="grid-column:3;grid-row:2;border-radius:12px;overflow:hidden;">
+        <img src="/shop3.jpg" alt="Welcome Sweets Shop" style="width:100%;height:100%;object-fit:cover;display:block;min-height:170px;" />
+      </div>
+    </div>
+  </section>
   <section id="about">
-    <h2>About Us</h2>
-    <p>We serve delicious sweets and savory snacks made fresh daily.</p>
+    <h2>Our Story</h2>
+    <p>What light through yonder doorway breaks? 'Tis the golden gleam of freshly fried jalebi, and the gentle perfume of cardamom that doth enchant the very air of our beloved shop. Welcome Sweets and Farsan — a name not merely spoken, but felt deep within the soul, like the first bite of warm mohanthal upon a winter's morn.</p>
+    <h2>Our Craft</h2>
+    <p>We are no ordinary merchants, dear patron. We are poets of the pan, philosophers of the farsan. Each morsel that emerges from our kitchen hath been fashioned with devotion most fervent — the sev, crisp as a sonnet; the kaju katli, smooth as a soliloquy; the chakli, spiralled like the very plot of a grand tragedy — yet far more pleasing upon the tongue.</p>
+    <div style="border-left:3px solid #EF9F27;padding:1.5rem 1.5rem 1.5rem 2rem;margin:2rem auto;max-width:750px;">
+      <p style="font-weight:700;font-size:1.3rem;color:#555;line-height:1.8;">"All the world's a sweet shop, and all the men and women merely customers — yet those who enter Welcome Sweets and Farsan, they leave as royalty."</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;max-width:750px;margin:2rem auto;">
+      <div style="background:#f5f5f3;border-radius:12px;padding:2rem 1rem;text-align:center;">
+        <span style="font-size:2rem;display:block;margin-bottom:0.8rem;color:#EF9F27;">✦</span>
+        <span style="font-size:1rem;font-weight:700;color:#633806;line-height:1.5;">100% Fresh Daily Crafted</span>
+      </div>
+      <div style="background:#f5f5f3;border-radius:12px;padding:2rem 1rem;text-align:center;">
+        <span style="font-size:2rem;display:block;margin-bottom:0.8rem;color:#EF9F27;">◆</span>
+        <span style="font-size:1rem;font-weight:700;color:#633806;line-height:1.5;">Authentic Recipes</span>
+      </div>
+      <div style="background:#f5f5f3;border-radius:12px;padding:2rem 1rem;text-align:center;">
+        <span style="font-size:2rem;display:block;margin-bottom:0.8rem;color:#EF9F27;">★</span>
+        <span style="font-size:1rem;font-weight:700;color:#633806;line-height:1.5;">Festival Gift Boxes</span>
+      </div>
+      <div style="background:#f5f5f3;border-radius:12px;padding:2rem 1rem;text-align:center;">
+        <span style="font-size:2rem;display:block;margin-bottom:0.8rem;color:#EF9F27;">♥</span>
+        <span style="font-size:1rem;font-weight:700;color:#633806;line-height:1.5;">Neighbourhood Favourite</span>
+      </div>
+    </div>
+    <div style="background:#FAEEDA;text-align:center;padding:2rem;margin-top:1rem;border-radius:12px;">
+      <p style="font-weight:700;font-size:1.2rem;color:#633806;line-height:1.8;">Henceforth, let it be known across the land —</p>
+      <p style="font-weight:700;font-size:1.3rem;color:#633806;line-height:1.8;"><strong>Welcome Sweets &amp; Farsan: where every sweet is a story, and every visit, a memory.</strong></p>
+      <p style="font-weight:700;font-size:1.1rem;color:#854F0B;margin-top:1rem;">— The Proprietors</p>
+    </div>
   </section>
   <section id="menu-preview">
     <h2>Popular Items</h2>
@@ -58,10 +109,13 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
   <section id="location">
-    <h2>Visit Us</h2>
+    <h2>Find Us</h2>
+    <p>Shop No. 11, Rustamji Evershine, Avenue J-4, Global City, Virar (West), Maharashtra, India</p>
+    <p>Phone: <span class="phone-num" onclick="copyPhone(this)" title="Click to copy">97648 84868</span> / <span class="phone-num" onclick="copyPhone(this)" title="Click to copy">96104 41857</span> / <span class="phone-num" onclick="copyPhone(this)" title="Click to copy">93585 49363</span></p>
+    <a href="https://maps.app.goo.gl/tvQjN9EZC4EFstH28" target="_blank" class="btn" style="display:inline-block;margin-top:1rem;">Open in Google Maps</a>
     <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3504.123456789012!2d77.123456!3d28.654321!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d04...!2sWelcome%20Sweets!5e0!3m2!1sen!2sin!4v1600000000000"
-      allowfullscreen="" loading="lazy"></iframe>
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3504.123456789012!2d72.8054615!3d19.4723286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b7e5e7e5e7e5%3A0x7e5e7e5e7e5e7e5e!2sGlobal%20City%2C%20Virar%20West!5e0!3m2!1sen!2sin!4v1600000000000"
+      allowfullscreen="" loading="lazy" style="margin-top:1rem;"></iframe>
   </section>
   <section id="order">
     <h2>Order Online</h2>
@@ -103,4 +157,15 @@ import Layout from '../layouts/Layout.astro';
     }
   }
   loadPopular();
+
+  function copyPhone(el) {
+    const num = el.textContent.trim();
+    navigator.clipboard.writeText(num).then(() => {
+      const toast = document.createElement('div');
+      toast.textContent = 'Copied: ' + num;
+      toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:0.8rem 1.5rem;border-radius:8px;font-size:1rem;z-index:9999;';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 2000);
+    });
+  }
 </script>

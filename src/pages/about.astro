@@ -2,78 +2,228 @@
 import Layout from '../layouts/Layout.astro';
 ---
 <Layout>
-  <style>
-    :root {
-      --primary: #d35400;
-      --bg: #fff8f0;
-      --text: #333;
-    }
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-    header {
+  <style is:global>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+    .about-hero {
       text-align: center;
-      padding: 3rem 1rem;
-      background: var(--primary);
-      color: #fff;
+      padding: 5rem 2rem 3rem;
+      background: linear-gradient(180deg, #fffdf8 0%, #fff8f0 100%);
     }
-    header img {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 1rem;
-    }
-    header h1 {
+    .about-hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: #633806;
       margin: 0.5rem 0;
-      font-size: 2rem;
+      line-height: 1.3;
     }
-    header p {
-      margin: 0;
-      opacity: 0.9;
+    .about-hero .subtitle {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.2rem;
+      font-variant: small-caps;
+      letter-spacing: 0.15em;
+      color: #854F0B;
+      margin-top: 0.6rem;
     }
-    section {
-      max-width: 960px;
-      margin: auto;
-      padding: 2rem;
-      line-height: 1.6;
-    }
-    h2 {
-      color: var(--primary);
+    .about-hero .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
       margin-top: 2rem;
+      color: #EF9F27;
+      font-size: 1rem;
     }
-    .btn {
-      display: inline-block;
-      background: var(--primary);
-      color: #fff;
-      padding: 0.8rem 1.5rem;
-      border-radius: 5px;
-      text-decoration: none;
+    .about-hero .ornament::before,
+    .about-hero .ornament::after {
+      content: '';
+      width: 80px;
+      height: 2px;
+      background: #EF9F27;
+    }
+
+    .about-label {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #EF9F27;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .about-section {
+      max-width: 750px;
+      margin: 0 auto;
+      padding: 2rem 2rem;
+    }
+
+    .about-card {
+      background: #f8f7f4;
+      border: 1px solid #e0ddd6;
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+    }
+
+    .about-card p {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: 1.45rem;
+      line-height: 2;
+      color: #444;
+      margin: 0;
+    }
+
+    .about-quote {
+      max-width: 750px;
+      margin: 1rem auto;
+      padding: 2rem 2rem 2rem 2.5rem;
+      border-left: 3px solid #EF9F27;
+    }
+
+    .about-quote p {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 2;
+      color: #555;
+      margin: 0;
+    }
+
+    .about-grid {
+      max-width: 750px;
+      margin: 2rem auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+    }
+
+    .about-pillar {
+      background: #f5f5f3;
+      border-radius: 12px;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    .about-pillar .icon {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.8rem;
+      color: #EF9F27;
+    }
+
+    .about-pillar span {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #633806;
+      line-height: 1.5;
+      display: block;
+    }
+
+    .about-footer-banner {
+      background: #FAEEDA;
+      text-align: center;
+      padding: 3rem 2rem;
       margin-top: 1.5rem;
     }
-    .btn:hover {
-      opacity: 0.9;
+
+    .about-footer-banner p {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #633806;
+      margin: 0.5rem 0;
+      line-height: 1.8;
+    }
+
+    .about-footer-banner .sign {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #854F0B;
+      margin-top: 1rem;
+      font-style: normal;
+    }
+
+    @media (max-width: 600px) {
+      .about-hero h1 {
+        font-size: 2.2rem;
+      }
+      .about-hero {
+        padding: 3rem 1.5rem 2rem;
+      }
+      .about-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .about-section {
+        padding: 1.5rem 1.2rem;
+      }
+      .about-card {
+        padding: 2rem 1.5rem;
+      }
+      .about-quote {
+        padding-left: 1.8rem;
+      }
+      .about-card p, .about-quote p {
+        font-size: 1.05rem;
+        line-height: 1.8;
+      }
     }
   </style>
-  <header>
-    <img src="/favicon.png" alt="Logo" loading="lazy" />
-    <h1>About Welcome Sweets</h1>
-    <p>Our story and values</p>
-  </header>
-  <section>
-    <h2>Our Story</h2>
-    <p>Founded in 2010, Welcome Sweets started as a small home-based kitchen with a passion for traditional Indian sweets. Over the years, we have grown into a beloved sweet shop known for quality, hygiene, and authentic flavors.</p>
-    <h2>Our Mission</h2>
-    <p>To bring joy to every celebration with sweets made from the finest ingredients, prepared with love and care.</p>
-    <h2>Quality & Hygiene</h2>
-    <p>We follow strict hygiene standards, use fresh ingredients, and prepare everything in a clean kitchen environment.</p>
-    <h2>Community</h2>
-    <p>We love giving back to the community by sponsoring local events and distributing sweets to those in need during festivals.</p>
-  </section>
-  <section>
-    <a href="/" class="btn">← Back to Home</a>
+
+  <div class="about-hero">
+    <h1>Welcome Sweets &amp; Farsan</h1>
+    <p class="subtitle">A Royal Court of Mithai &amp; Namkeen</p>
+    <div class="ornament">◆</div>
+  </div>
+
+  <div class="about-section">
+    <span class="about-label">✦ Our Story</span>
+    <div class="about-card">
+      <p>What light through yonder doorway breaks? 'Tis the golden gleam of freshly fried jalebi, and the gentle perfume of cardamom that doth enchant the very air of our beloved shop. Welcome Sweets and Farsan — a name not merely spoken, but felt deep within the soul, like the first bite of warm mohanthal upon a winter's morn.</p>
+    </div>
+  </div>
+
+  <div class="about-section">
+    <span class="about-label">✦ Our Craft</span>
+    <div class="about-card">
+      <p>We are no ordinary merchants, dear patron. We are poets of the pan, philosophers of the farsan. Each morsel that emerges from our kitchen hath been fashioned with devotion most fervent — the sev, crisp as a sonnet; the kaju katli, smooth as a soliloquy; the chakli, spiralled like the very plot of a grand tragedy — yet far more pleasing upon the tongue.</p>
+    </div>
+  </div>
+
+  <div class="about-quote">
+    <p>"All the world's a sweet shop, and all the men and women merely customers — yet those who enter Welcome Sweets and Farsan, they leave as royalty."</p>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-pillar">
+      <span class="icon">✦</span>
+      <span>100% Fresh Daily Crafted</span>
+    </div>
+    <div class="about-pillar">
+      <span class="icon">◆</span>
+      <span>Authentic Recipes</span>
+    </div>
+    <div class="about-pillar">
+      <span class="icon">★</span>
+      <span>Festival Gift Boxes</span>
+    </div>
+    <div class="about-pillar">
+      <span class="icon">♥</span>
+      <span>Neighbourhood Favourite</span>
+    </div>
+  </div>
+
+  <div class="about-footer-banner">
+    <p>Henceforth, let it be known across the land —</p>
+    <p><strong>Welcome Sweets &amp; Farsan: where every sweet is a story, and every visit, a memory.</strong></p>
+    <p class="sign">— The Proprietors</p>
+  </div>
+
+  <section style="max-width:750px;margin:2rem auto;text-align:center;padding:0 2rem;">
+    <a href="/" style="display:inline-block;background:#d35400;color:#fff;padding:1rem 2rem;border-radius:5px;text-decoration:none;font-size:1.25rem;">← Back to Home</a>
   </section>
 </Layout>

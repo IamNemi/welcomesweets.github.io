@@ -1,0 +1,113 @@
+---
+---
+<div class="oh-card">
+  <h3 class="oh-title">Opening hours</h3>
+  <div class="oh-badge" id="oh-badge">
+    <span class="oh-dot"></span>
+    <span id="oh-status">Checking…</span>
+  </div>
+  <div class="oh-rows">
+    <div class="oh-row">
+      <span class="oh-day">Mon – Sat</span>
+      <span class="oh-time">9:00 am – 9:00 pm</span>
+    </div>
+    <div class="oh-row">
+      <span class="oh-day">Sunday</span>
+      <span class="oh-time">9:00 am – 6:00 pm</span>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var now = new Date();
+    var day = now.getDay();
+    var h = now.getHours();
+    var m = now.getMinutes();
+    var mins = h * 60 + m;
+    var open, close;
+
+    if (day === 0) {
+      open = 9 * 60;
+      close = 18 * 60;
+    } else {
+      open = 9 * 60;
+      close = 21 * 60;
+    }
+
+    var badge = document.getElementById('oh-badge');
+    var status = document.getElementById('oh-status');
+    if (mins >= open && mins < close) {
+      badge.classList.add('open');
+      status.textContent = 'Open now';
+    } else {
+      badge.classList.add('closed');
+      status.textContent = 'Closed';
+    }
+  })();
+</script>
+
+<style>
+  .oh-card {
+    background: #FAF5F0;
+    border: 1px solid #e8e0d8;
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    max-width: 380px;
+    font-family: Georgia, serif;
+  }
+  .oh-title {
+    margin: 0 0 1rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #633806;
+  }
+  .oh-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  .oh-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .oh-badge.open {
+    background: #e6f9ed;
+    color: #1a7a3a;
+  }
+  .oh-badge.open .oh-dot {
+    background: #1a7a3a;
+  }
+  .oh-badge.closed {
+    background: #fde8e8;
+    color: #b42318;
+  }
+  .oh-badge.closed .oh-dot {
+    background: #b42318;
+  }
+  .oh-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .oh-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .oh-day {
+    font-size: 1.15rem;
+    color: #633806;
+  }
+  .oh-time {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #854F0B;
+  }
+</style>
