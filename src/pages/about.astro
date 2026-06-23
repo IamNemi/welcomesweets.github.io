@@ -1,0 +1,79 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout>
+  <style>
+    :root {
+      --primary: #d35400;
+      --bg: #fff8f0;
+      --text: #333;
+    }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: var(--primary);
+      color: #fff;
+    }
+    header img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      margin: 0.5rem 0;
+      font-size: 2rem;
+    }
+    header p {
+      margin: 0;
+      opacity: 0.9;
+    }
+    section {
+      max-width: 960px;
+      margin: auto;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    h2 {
+      color: var(--primary);
+      margin-top: 2rem;
+    }
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-top: 1.5rem;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+  <header>
+    <img src="/favicon.png" alt="Logo" loading="lazy" />
+    <h1>About Welcome Sweets</h1>
+    <p>Our story and values</p>
+  </header>
+  <section>
+    <h2>Our Story</h2>
+    <p>Founded in 2010, Welcome Sweets started as a small home-based kitchen with a passion for traditional Indian sweets. Over the years, we have grown into a beloved sweet shop known for quality, hygiene, and authentic flavors.</p>
+    <h2>Our Mission</h2>
+    <p>To bring joy to every celebration with sweets made from the finest ingredients, prepared with love and care.</p>
+    <h2>Quality & Hygiene</h2>
+    <p>We follow strict hygiene standards, use fresh ingredients, and prepare everything in a clean kitchen environment.</p>
+    <h2>Community</h2>
+    <p>We love giving back to the community by sponsoring local events and distributing sweets to those in need during festivals.</p>
+  </section>
+  <section>
+    <a href="/" class="btn">← Back to Home</a>
+  </section>
+</Layout>

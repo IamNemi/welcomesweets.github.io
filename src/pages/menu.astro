@@ -1,0 +1,178 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout>
+  <style>
+    :root {
+      --primary: #d35400;
+      --bg: #fff8f0;
+      --text: #333;
+    }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: var(--primary);
+      color: #fff;
+    }
+    header img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      margin: 0.5rem 0;
+      font-size: 2rem;
+    }
+    header p {
+      margin: 0;
+      opacity: 0.9;
+    }
+    section {
+      max-width: 960px;
+      margin: auto;
+      padding: 2rem;
+    }
+    h2 {
+      color: var(--primary);
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .category {
+      margin-top: 2rem;
+    }
+    .category h3 {
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.3rem;
+      display: inline-block;
+    }
+    .items {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    .item {
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      background: #fff;
+    }
+    .item img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    .item h4 {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+    .item p {
+      margin: 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-top: 2rem;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+  <header>
+    <img src="/favicon.png" alt=" loading="lazy"Logo" loading="lazy" />
+    <h1>Our Menu</h1>
+    <p>Explore our delicious sweets and savories</p>
+  </header>
+  <section>
+    <div class="category">
+      <h3>Traditional Sweets</h3>
+      <div class="items">
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Ladoo" />
+          <h4>Ladoo</h4>
+          <p>Sweet ball made of gram flour, sugar, and ghee.</p>
+        </div>
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Barfi" />
+          <h4>Barfi</h4>
+          <p>Dense milk-based sweetened with sugar.</p>
+        </div>
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Gulab Jamun" />
+          <h4>Gulab Jamun</h4>
+          <p>Soft balls soaked in rose syrup.</p>
+        </div>
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Jalebi" />
+          <h4>Jalebi</h4>
+          <p>Crispy spiral fried batter soaked in syrup.</p>
+        </div>
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Rasgulla" />
+          <h4>Rasgulla</h4>
+          <p>Spongy cheese balls in light syrup.</p>
+        </div>
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Kaju Katli" />
+          <h4>Kaju Katli</h4>
+          <p>Cashew fudge topped with edible silver leaf.</p>
+        </div>
+      </div>
+    </div>
+    <div class="category">
+      <h3>Savory Snacks (Farsan)</h3>
+      <div class="items">
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Samosa" />
+          <h4>Samosa</h4>
+          <p>Crispy pastry filled with spiced potatoes and peas.</p>
+        </div>
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Kachori" />
+          <h4>Kachori</h4>
+          <p>Spicy lentil-filled deep-fried pastry.</p>
+        </div>
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Dhokla" />
+          <h4>Dhokla</h4>
+          <p>Steamed fermented rice and chickpea flour cake.</p>
+        </div>
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Khandvi" />
+          <h4>Khandvi</h4>
+          <p>Silky rolls made from gram flour and yogurt.</p>
+        </div>
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Chakli" />
+          <h4>Chakli</h4>
+          <p>Crispy spiral snack made from rice flour.</p>
+        </div>
+        <div class="item">
+          <img src="/favicon.svg" alt=" loading="lazy"Sev" />
+          <h4>Sev</h4>
+          <p>Crunchy chickpea flour noodles.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <a href="/" class="btn">← Back to Home</a>
+  </section>
+</Layout>
