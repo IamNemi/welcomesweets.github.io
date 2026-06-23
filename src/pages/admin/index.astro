@@ -1,3 +1,7 @@
+---
+// Admin panel — standalone page, no Layout wrapper
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,13 +22,15 @@
         .card { background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 20px; }
         .card h2 { color: #d35400; margin-bottom: 16px; font-size: 18px; }
         label { display: block; font-weight: 600; margin-bottom: 6px; margin-top: 12px; }
+        .row label { margin-top: 0; }
         input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; font-family: inherit; }
         textarea { min-height: 80px; resize: vertical; }
         .row { display: flex; gap: 12px; flex-wrap: wrap; }
         .row > * { flex: 1; min-width: 200px; }
+        .form-actions { display: flex; gap: 8px; margin-top: 16px; }
         button {
             padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;
-            font-size: 15px; font-weight: 600; margin-top: 16px;
+            font-size: 15px; font-weight: 600;
         }
         .btn-primary { background: #d35400; color: #fff; }
         .btn-primary:hover { background: #c0392b; }
@@ -37,12 +43,12 @@
         table { width: 100%; border-collapse: collapse; margin-top: 12px; }
         th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #eee; }
         th { background: #fafafa; font-size: 13px; text-transform: uppercase; color: #888; }
-        .item-row img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+        .img-link { color: #d35400; text-decoration: none; font-size: 13px; word-break: break-all; }
+        .img-link:hover { text-decoration: underline; }
         .actions { display: flex; gap: 6px; }
         .hidden { display: none; }
         #login-box { max-width: 380px; margin: 60px auto; }
         #login-box h2 { text-align: center; }
-        .preview-img { max-width: 180px; max-height: 180px; border-radius: 4px; margin-top: 8px; display: block; }
         .tab-bar { display: flex; gap: 0; margin-bottom: 20px; }
         .tab-bar button { flex: 1; background: #eee; color: #333; border-radius: 0; margin: 0; }
         .tab-bar button.active { background: #d35400; color: #fff; }
@@ -87,11 +93,13 @@
                 <h2>Add / Edit Category</h2>
                 <input type="hidden" id="cat-id">
                 <div class="row">
-                    <div><label>Name</label><input type="text" id="cat-name" placeholder="e.g. Traditional Sweets"></div>
-                    <div><label>Sort Order</label><input type="number" id="cat-order" value="0"></div>
+                    <div><label for="cat-name">Name</label><input type="text" id="cat-name" placeholder="e.g. Traditional Sweets"></div>
+                    <div><label for="cat-order">Sort Order</label><input type="number" id="cat-order" value="0"></div>
                 </div>
-                <button class="btn-primary" onclick="saveCat()">Save</button>
-                <button class="btn-secondary" onclick="clearCatForm()">Clear</button>
+                <div class="form-actions">
+                    <button class="btn-primary" onclick="saveCat()">Save</button>
+                    <button class="btn-secondary" onclick="clearCatForm()">Clear</button>
+                </div>
             </div>
             <div class="card">
                 <h2>Existing Categories</h2>
@@ -109,24 +117,29 @@
                 <input type="hidden" id="item-id">
                 <div class="row">
                     <div>
-                        <label>Category</label>
+                        <label for="item-cat">Category</label>
                         <select id="item-cat"></select>
                     </div>
-                    <div><label>Name</label><input type="text" id="item-name" placeholder="e.g. Ladoo"></div>
+                    <div><label for="item-name">Name</label><input type="text" id="item-name" placeholder="e.g. Ladoo"></div>
                 </div>
-                <label>Description</label>
+                <label for="item-desc">Description</label>
                 <textarea id="item-desc" placeholder="Describe the item..."></textarea>
                 <div class="row">
-                    <div><label>Price (optional)</label><input type="text" id="item-price" placeholder="e.g. ₹30"></div>
-                    <div><label>Image URL</label><input type="text" id="item-img" placeholder="Paste URL or use Image Upload tab"></div>
+                    <div><label for="item-price">Price (optional)</label><input type="text" id="item-price" placeholder="e.g. ₹30"></div>
+                    <div><label for="item-img">Image URL</label><input type="text" id="item-img" placeholder="Paste URL or use Image Upload tab"></div>
                 </div>
-                <button class="btn-primary" onclick="saveItem()">Save</button>
-                <button class="btn-secondary" onclick="clearItemForm()">Clear</button>
+                <label for="item-popular" style="margin-top:12px;display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer;">
+                    <input type="checkbox" id="item-popular" style="width:auto;"> Mark as Popular (shows on homepage)
+                </label>
+                <div class="form-actions">
+                    <button class="btn-primary" onclick="saveItem()">Save</button>
+                    <button class="btn-secondary" onclick="clearItemForm()">Clear</button>
+                </div>
             </div>
             <div class="card">
                 <h2>Existing Items</h2>
                 <table>
-                    <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Actions</th></tr></thead>
+                    <thead><tr><th>Image Link</th><th>Name</th><th>Category</th><th>Price</th><th>Popular</th><th>Actions</th></tr></thead>
                     <tbody id="item-table"></tbody>
                 </table>
             </div>
@@ -137,12 +150,17 @@
             <div class="card">
                 <h2>Upload Image</h2>
                 <p style="color:#666;margin-bottom:12px;">Upload an image to get a URL you can paste into menu items.</p>
-                <label>Choose File</label>
-                <input type="file" id="img-file" accept="image/*">
-                <img id="img-preview" class="preview-img hidden">
+                <p style="color:#d35400;font-size:13px;margin-bottom:12px;background:#fff3e0;padding:8px 12px;border-radius:4px;">
+                    Images are automatically resized to <strong>175×175px</strong> and compressed before uploading. No manual resizing needed.
+                </p>
+                <label for="img-file">Choose File</label>
+                <input type="file" id="img-file" accept="image/jpeg,image/png,image/webp,image/gif">
+                <p id="img-size-warning" style="color:#e67e22;font-size:13px;margin-top:6px;display:none;">
+                    This image is quite large. It will be resized automatically.
+                </p>
                 <button class="btn-primary" onclick="uploadImg()">Upload</button>
                 <div id="upload-result" class="hidden" style="margin-top:12px;">
-                    <label>Image URL (copy this)</label>
+                    <label for="upload-url">Image URL (copy this)</label>
                     <input type="text" id="upload-url" readonly onclick="this.select()">
                 </div>
             </div>
@@ -152,8 +170,8 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script is:inline>
 // ============================================================
 // Supabase Config
 // ============================================================
@@ -307,11 +325,15 @@ function renderItems() {
     const tb = document.getElementById('item-table');
     tb.innerHTML = items.map(i => {
         const catName = (cats.find(c => c.id === i.category_id) || {}).name || '—';
+        const imgLink = i.image_url
+            ? `<a href="${esc(i.image_url)}" target="_blank" class="img-link">View</a>`
+            : '—';
         return `<tr>
-            <td><img src="${esc(i.image_url || '/favicon.svg')}" alt=""></td>
+            <td>${imgLink}</td>
             <td>${esc(i.name)}</td>
             <td>${esc(catName)}</td>
             <td>${esc(i.price || '—')}</td>
+            <td>${i.popular ? '⭐' : '—'}</td>
             <td class="actions">
                 <button class="btn-primary btn-small" onclick="editItem('${i.id}')">Edit</button>
                 <button class="btn-danger btn-small" onclick="delItem('${i.id}')">Delete</button>
@@ -322,6 +344,7 @@ function renderItems() {
 function clearItemForm() {
     ['item-id','item-name','item-desc','item-price','item-img'].forEach(id => document.getElementById(id).value='');
     document.getElementById('item-cat').value = '';
+    document.getElementById('item-popular').checked = false;
 }
 function editItem(id) {
     const i = items.find(x => x.id === id);
@@ -332,6 +355,7 @@ function editItem(id) {
     document.getElementById('item-desc').value  = i.description || '';
     document.getElementById('item-price').value = i.price || '';
     document.getElementById('item-img').value   = i.image_url || '';
+    document.getElementById('item-popular').checked = !!i.popular;
 }
 async function saveItem() {
     const id   = document.getElementById('item-id').value;
@@ -341,7 +365,8 @@ async function saveItem() {
     const price= document.getElementById('item-price').value.trim();
     const img  = document.getElementById('item-img').value.trim();
     if (!cat || !name) return flash(false, 'Category and Name are required');
-    const row = { category_id: cat, name, description: desc, price, image_url: img };
+    const popular = document.getElementById('item-popular').checked;
+    const row = { category_id: cat, name, description: desc, price, image_url: img, popular };
     let err;
     if (id) {
         ({ error: err } = await supa.from('menu_items').update(row).eq('id', id));
@@ -358,25 +383,54 @@ async function delItem(id) {
     flash(true, 'Item deleted'); loadItems();
 }
 
-/* ── image upload ─────────────────────────────────── */
+/* ── image upload with auto-resize ─────────────────── */
+const TARGET_SIZE = 175;
+
 document.getElementById('img-file').addEventListener('change', e => {
     const f = e.target.files[0];
-    if (!f) return;
-    const r = new FileReader();
-    r.onload = ev => { const p = document.getElementById('img-preview'); p.src = ev.target.result; p.classList.remove('hidden'); };
-    r.readAsDataURL(f);
+    const warn = document.getElementById('img-size-warning');
+    if (!f) { warn.style.display = 'none'; return; }
+    warn.style.display = f.size > 500 * 1024 ? 'block' : 'none';
 });
+
+function resizeImage(file) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+            const canvas = document.createElement('canvas');
+            canvas.width = TARGET_SIZE;
+            canvas.height = TARGET_SIZE;
+            const ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            const min = Math.min(img.width, img.height);
+            const sx = (img.width - min) / 2;
+            const sy = (img.height - min) / 2;
+            ctx.drawImage(img, sx, sy, min, min, 0, 0, TARGET_SIZE, TARGET_SIZE);
+            canvas.toBlob((blob) => {
+                resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.webp'), { type: 'image/webp' }));
+            }, 'image/webp', 0.92);
+        };
+        img.src = url;
+    });
+}
+
 async function uploadImg() {
     const file = document.getElementById('img-file').files[0];
     if (!file) return alert('Choose a file first');
-    const ext = file.name.split('.').pop();
-    const path = 'menu/' + Date.now() + '.' + ext;
-    const { error } = await supa.storage.from('menu-images').upload(path, file);
+
+    flash(true, 'Resizing image to 175×175px…');
+    const resized = await resizeImage(file);
+    const path = 'menu/' + Date.now() + '.webp';
+
+    const { error } = await supa.storage.from('menu-images').upload(path, resized);
     if (error) return flash(false, error.message);
     const { data } = supa.storage.from('menu-images').getPublicUrl(path);
     document.getElementById('upload-url').value = data.publicUrl;
     document.getElementById('upload-result').classList.remove('hidden');
-    flash(true, 'Image uploaded — copy the URL below');
+    flash(true, 'Image resized & uploaded — copy the URL below');
 }
 
 /* ── helpers ──────────────────────────────────────── */

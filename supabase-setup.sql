@@ -18,7 +18,8 @@ create table if not exists menu_items (
   description text default '',
   price text default '',
   image_url text default '',
-  sort_order int default 0
+  sort_order int default 0,
+  popular boolean default false
 );
 
 -- 3. Enable Row Level Security (RLS)
