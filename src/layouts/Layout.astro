@@ -2,7 +2,7 @@
 <html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/content.ico" />
   <link rel="icon" href="/favicon.ico" />
   <meta name="generator" content={Astro.generator} />
@@ -47,7 +47,7 @@
     color: #fff;
     text-decoration: none;
     font-weight: bold;
-    font-size: 1.55rem;
+    font-size: clamp(1rem, 4vw, 1.55rem);
     padding: 0.5rem 1rem;
   }
   .site-header nav a:hover {
@@ -69,7 +69,10 @@
     background-size: cover;
     color: #333;
     position: relative;
+    overflow-x: hidden;
   }
+  *, *::before, *::after { box-sizing: border-box; }
+  img, iframe, video, embed { max-width:100%; height:auto; }
   body::before {
     content: '';
     position: fixed;
