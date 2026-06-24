@@ -4,11 +4,18 @@ import Layout from '../layouts/Layout.astro';
 <Layout>
   <style is:global>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes slideInLeft { from { opacity:0; transform:translateX(-30px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes scaleIn { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:scale(1); } }
+    .reveal { opacity:0; transform:translateY(30px); transition:opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
 
     .about-hero {
       text-align: center;
       padding: 5rem 2rem 3rem;
       background: linear-gradient(180deg, #fffdf8 0%, #fff8f0 100%);
+      animation:fadeIn 0.6s ease;
     }
     .about-hero h1 {
       font-family: 'Playfair Display', Georgia, serif;
@@ -17,6 +24,7 @@ import Layout from '../layouts/Layout.astro';
       color: #633806;
       margin: 0.5rem 0;
       line-height: 1.3;
+      animation:fadeInUp 0.6s ease 0.1s both;
     }
     .about-hero .subtitle {
       font-family: 'Playfair Display', Georgia, serif;
@@ -25,6 +33,7 @@ import Layout from '../layouts/Layout.astro';
       letter-spacing: 0.15em;
       color: #854F0B;
       margin-top: 0.6rem;
+      animation:fadeInUp 0.6s ease 0.2s both;
     }
     .about-hero .ornament {
       display: flex;
@@ -34,6 +43,7 @@ import Layout from '../layouts/Layout.astro';
       margin-top: 2rem;
       color: #EF9F27;
       font-size: 1rem;
+      animation:fadeInUp 0.6s ease 0.3s both;
     }
     .about-hero .ornament::before,
     .about-hero .ornament::after {
@@ -65,7 +75,9 @@ import Layout from '../layouts/Layout.astro';
       border: 1px solid #e0ddd6;
       border-radius: 12px;
       padding: 2.5rem 2rem;
+      transition:box-shadow 0.3s ease, transform 0.3s ease;
     }
+    .about-card:hover { box-shadow:0 6px 20px rgba(0,0,0,0.08); transform:translateY(-2px); }
 
     .about-card p {
       font-family: 'Playfair Display', Georgia, serif;
@@ -105,14 +117,18 @@ import Layout from '../layouts/Layout.astro';
       border-radius: 12px;
       padding: 2rem 1rem;
       text-align: center;
+      transition:transform 0.3s ease, box-shadow 0.3s ease;
     }
+    .about-pillar:hover { transform:translateY(-4px); box-shadow:0 6px 16px rgba(0,0,0,0.08); }
 
     .about-pillar .icon {
       font-size: 2rem;
       display: block;
       margin-bottom: 0.8rem;
       color: #EF9F27;
+      transition:transform 0.3s ease;
     }
+    .about-pillar:hover .icon { transform:scale(1.2); }
 
     .about-pillar span {
       font-family: 'Playfair Display', Georgia, serif;
@@ -148,29 +164,20 @@ import Layout from '../layouts/Layout.astro';
       font-style: normal;
     }
 
+    .about-back-btn {
+      display:inline-block; background:#d35400; color:#fff; padding:1rem 2rem;
+      border-radius:5px; text-decoration:none; font-size:1.25rem; transition:all 0.3s ease;
+    }
+    .about-back-btn:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,0.15); }
+
     @media (max-width: 600px) {
-      .about-hero h1 {
-        font-size: 2.2rem;
-      }
-      .about-hero {
-        padding: 3rem 1.5rem 2rem;
-      }
-      .about-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .about-section {
-        padding: 1.5rem 1.2rem;
-      }
-      .about-card {
-        padding: 2rem 1.5rem;
-      }
-      .about-quote {
-        padding-left: 1.8rem;
-      }
-      .about-card p, .about-quote p {
-        font-size: 1.05rem;
-        line-height: 1.8;
-      }
+      .about-hero h1 { font-size: 2.2rem; }
+      .about-hero { padding: 3rem 1.5rem 2rem; }
+      .about-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-section { padding: 1.5rem 1.2rem; }
+      .about-card { padding: 2rem 1.5rem; }
+      .about-quote { padding-left: 1.8rem; }
+      .about-card p, .about-quote p { font-size: 1.05rem; line-height: 1.8; }
     }
   </style>
 
@@ -180,25 +187,25 @@ import Layout from '../layouts/Layout.astro';
     <div class="ornament">◆</div>
   </div>
 
-  <div class="about-section">
+  <div class="about-section reveal">
     <span class="about-label">✦ Our Story</span>
     <div class="about-card">
       <p>What light through yonder doorway breaks? 'Tis the golden gleam of freshly fried jalebi, and the gentle perfume of cardamom that doth enchant the very air of our beloved shop. Welcome Sweets and Farsan — a name not merely spoken, but felt deep within the soul, like the first bite of warm mohanthal upon a winter's morn.</p>
     </div>
   </div>
 
-  <div class="about-section">
+  <div class="about-section reveal">
     <span class="about-label">✦ Our Craft</span>
     <div class="about-card">
       <p>We are no ordinary merchants, dear patron. We are poets of the pan, philosophers of the farsan. Each morsel that emerges from our kitchen hath been fashioned with devotion most fervent — the sev, crisp as a sonnet; the kaju katli, smooth as a soliloquy; the chakli, spiralled like the very plot of a grand tragedy — yet far more pleasing upon the tongue.</p>
     </div>
   </div>
 
-  <div class="about-quote">
+  <div class="about-quote reveal">
     <p>"All the world's a sweet shop, and all the men and women merely customers — yet those who enter Welcome Sweets and Farsan, they leave as royalty."</p>
   </div>
 
-  <div class="about-grid">
+  <div class="about-grid reveal">
     <div class="about-pillar">
       <span class="icon">✦</span>
       <span>100% Fresh Daily Crafted</span>
@@ -217,13 +224,20 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </div>
 
-  <div class="about-footer-banner">
+  <div class="about-footer-banner reveal">
     <p>Henceforth, let it be known across the land —</p>
     <p><strong>Welcome Sweets &amp; Farsan: where every sweet is a story, and every visit, a memory.</strong></p>
     <p class="sign">— The Proprietors</p>
   </div>
 
   <section style="max-width:750px;margin:2rem auto;text-align:center;padding:0 2rem;">
-    <a href="/" style="display:inline-block;background:#d35400;color:#fff;padding:1rem 2rem;border-radius:5px;text-decoration:none;font-size:1.25rem;">← Back to Home</a>
+    <a href="/" class="about-back-btn">← Back to Home</a>
   </section>
+
+  <script is:inline>
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
 </Layout>
