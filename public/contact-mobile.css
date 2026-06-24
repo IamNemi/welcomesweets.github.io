@@ -1,0 +1,70 @@
+/* Mobile-only styles for Contact page - loaded via media query, desktop ignores this */
+header {
+  padding: 2rem 1rem !important;
+  text-align: center;
+}
+header img {
+  width: 100px !important;
+  height: 100px !important;
+}
+header h1 {
+  font-size: 1.8rem !important;
+  margin: 0.4rem 0 !important;
+}
+header p {
+  font-size: 1rem !important;
+}
+section {
+  padding: 1rem !important;
+  max-width: 100% !important;
+}
+h2 {
+  font-size: 1.5rem !important;
+  margin-top: 1.2rem !important;
+}
+.contact-info {
+  flex-direction: column !important;
+  gap: 1rem !important;
+}
+.info-item {
+  padding: 1.2rem !important;
+  min-width: 100% !important;
+  flex: none !important;
+  overflow: hidden !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.info-item h3 {
+  font-size: 1.3rem !important;
+}
+.info-item p {
+  font-size: 1rem !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+.map iframe {
+  height: 220px !important;
+}
+.btn {
+  display: block !important;
+  text-align: center !important;
+  padding: 0.9rem 1.5rem !important;
+  font-size: 1rem !important;
+  margin-top: 0.8rem !important;
+}
+form {
+  padding: 1.2rem !important;
+}
+input, textarea {
+  padding: 0.8rem !important;
+  font-size: 1rem !important;
+}
+button {
+  width: 100% !important;
+  padding: 0.9rem !important;
+  font-size: 1.1rem !important;
+}
+.phone-num {
+  font-size: 1rem !important;
+}
