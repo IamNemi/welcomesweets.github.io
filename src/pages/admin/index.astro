@@ -70,6 +70,13 @@
         .search-bar label input[type="checkbox"] { width:auto; }
         .item-count { font-size:13px; color:#888; margin-bottom:8px; }
         @media (max-width: 600px) { .row { flex-direction: column; } }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>

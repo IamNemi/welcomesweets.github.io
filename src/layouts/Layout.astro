@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width" />
@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Puritan:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <script is:inline>document.documentElement.classList.remove('no-js');</script>
   <header class="site-header">
     <nav>
       <a href="/">Home</a>
@@ -85,5 +86,13 @@
   main {
     min-height: calc(100vh - 80px);
     box-sizing: border-box;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .reveal { opacity:1; transform:none; }
   }
 </style>
